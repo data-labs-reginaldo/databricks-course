@@ -19,4 +19,4 @@ Practice exams for this certification are available in the following Udemy cours
 
 - Git Fundamentals ✔
 - GitHub ✔
-- Databricks Course (In Progress)
+- Databricks Course (In Progress).
