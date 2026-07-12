@@ -14,3 +14,9 @@ This repository contains the resources of the preparation course for Databricks 
 Practice exams for this certification are available in the following Udemy course:
 <br/>
 <a href="https://www.udemy.com/course/practice-exams-databricks-certified-data-engineer-associate/?referralCode=9AA679C03D1F51B2C956" target="_blank">https://www.udemy.com/course/practice-exams-databricks-certified-data-engineer-associate/?referralCode=9AA679C03D1F51B2C956</a>.<br/>
+
+## Study Progress
+
+- Git Fundamentals ✔
+- GitHub ✔
+- Databricks Course (In Progress)
