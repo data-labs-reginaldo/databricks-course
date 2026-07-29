@@ -165,3 +165,4 @@ Jobs
 Data Quality
 Performance (OPTIMIZE, ZORDER, VACUUM, Time Travel)
 Views materializadas e métricas
+
