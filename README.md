@@ -153,3 +153,15 @@ Data Engineer
 # Licença
 
 Este projeto é destinado para fins educacionais.
+-- ==============================================================================================================================
+Depois de concluir o curso, podemos evoluir o BookStore-Lab para incluir os tópicos que ainda faltam para a certificação, como:
+-- ==============================================================================================================================
+Bronze / Silver / Gold
+Auto Loader
+Delta Live Tables
+Unity Catalog
+Workflows
+Jobs
+Data Quality
+Performance (OPTIMIZE, ZORDER, VACUUM, Time Travel)
+Views materializadas e métricas
