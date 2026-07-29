@@ -97,3 +97,107 @@ USING books_updates u
 ON b.book_id = u.book_id AND b.title = u.title
 WHEN NOT MATCHED AND u.category = 'Computer Science' THEN 
   INSERT *
+
+-- COMMAND ----------
+
+drop table employees_teste;
+drop view temp_employees_teste;
+
+
+-- COMMAND ----------
+
+CREATE TABLE employees_teste
+  (id INT, name STRING, salary DOUBLE);
+
+-- COMMAND ----------
+
+select * from employees_teste
+
+-- COMMAND ----------
+
+INSERT INTO employees_teste
+VALUES 
+  (1, "Adam", 3500.0),
+  (2, "Sarah", 4020.5);
+
+INSERT INTO employees_teste
+VALUES
+  (3, "John", 2999.3),
+  (4, "Thomas", 4000.3);
+
+INSERT INTO employees_teste
+VALUES
+  (5, "Anna", 2500.0);
+
+INSERT INTO employees_teste
+VALUES
+  (6, "Kim", 6200.3)
+
+-- COMMAND ----------
+
+describe history employees_teste;
+
+
+-- COMMAND ----------
+
+select * from employees_teste
+
+-- COMMAND ----------
+
+CREATE OR REPLACE TEMP VIEW temp_employees_teste AS 
+SELECT * FROM employees_teste@v04;
+
+-- COMMAND ----------
+
+SELECT * FROM temp_employees_teste;
+
+-- COMMAND ----------
+
+update employees_teste set salary = 10000 where id = 1
+
+-- COMMAND ----------
+
+delete from employees_teste where id = 2
+
+-- COMMAND ----------
+
+SELECT * FROM employees_teste;
+
+-- COMMAND ----------
+
+describe history employees_teste;
+
+-- COMMAND ----------
+
+ -- (id INT, name STRING, salary DOUBLE);
+
+MERGE INTO employees_teste c
+USING temp_employees_teste u
+ON c.id = u.id
+WHEN MATCHED AND c.salary <> u.salary THEN
+  UPDATE SET salary = u.salary
+WHEN NOT MATCHED THEN INSERT *
+
+-- COMMAND ----------
+
+SELECT * FROM employees_teste;
+
+-- COMMAND ----------
+
+describe history employees_teste
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY employees_teste;
+
+-- COMMAND ----------
+
+DESCRIBE DETAIL employees_teste;
+
+-- COMMAND ----------
+
+OPTIMIZE employees_teste;
+
+-- COMMAND ----------
+
+DESCRIBE DETAIL employees_teste;

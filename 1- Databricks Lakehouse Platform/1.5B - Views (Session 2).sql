@@ -1,5 +1,5 @@
 -- Databricks notebook source
-USE CATALOG hive_metastore;
+USE CATALOG workspace
 
 -- COMMAND ----------
 

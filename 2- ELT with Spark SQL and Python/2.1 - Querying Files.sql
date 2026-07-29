@@ -7,6 +7,39 @@
 
 -- COMMAND ----------
 
+select * from samples.tpch.customer
+
+-- COMMAND ----------
+
+DESCRIBE samples.tpch.customer
+
+-- COMMAND ----------
+
+DESCRIBE samples.tpch.orders
+
+-- COMMAND ----------
+
+DESCRIBE DETAIL  samples.tpch.customer
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY  samples.tpch.customer
+
+
+-- COMMAND ----------
+
+select * from samples.tpch.orders
+
+-- COMMAND ----------
+
+select count(*) from samples.tpch.orders -- 7.500.000
+
+-- COMMAND ----------
+
+ samples.tpch.customer
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC ## Querying JSON 
 
@@ -69,6 +102,10 @@ SELECT * FROM binaryFile.`${dataset.bookstore}/customers-json`
 -- COMMAND ----------
 
 SELECT * FROM csv.`${dataset.bookstore}/books-csv`
+
+-- COMMAND ----------
+
+DESCRIBE EXTENDED dbacademy.default.olist_sellers_dataset
 
 -- COMMAND ----------
 

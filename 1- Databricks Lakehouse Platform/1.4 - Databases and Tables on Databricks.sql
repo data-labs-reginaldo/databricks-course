@@ -4,13 +4,21 @@
 
 -- COMMAND ----------
 
-USE CATALOG hive_metastore;
+USE CATALOG workspace;
 
 CREATE TABLE managed_default
   (width INT, length INT, height INT);
 
 INSERT INTO managed_default
 VALUES (3 INT, 2 INT, 1 INT)
+
+-- COMMAND ----------
+
+SELECT current_catalog();
+
+-- COMMAND ----------
+
+
 
 -- COMMAND ----------
 
@@ -25,8 +33,8 @@ DESCRIBE EXTENDED managed_default
 -- COMMAND ----------
 
 CREATE TABLE external_default
-  (width INT, length INT, height INT)
-LOCATION 'dbfs:/mnt/demo/external_default';
+  (width INT, length INT, height INT);
+
   
 INSERT INTO external_default
 VALUES (3 INT, 2 INT, 1 INT)
@@ -83,8 +91,8 @@ VALUES (3 INT, 2 INT, 1 INT);
 -----------------------------------
 
 CREATE TABLE external_new_default
-  (width INT, length INT, height INT)
-LOCATION 'dbfs:/mnt/demo/external_new_default';
+  (width INT, length INT, height INT);
+
   
 INSERT INTO external_new_default
 VALUES (3 INT, 2 INT, 1 INT);
@@ -118,7 +126,7 @@ DROP TABLE external_new_default;
 -- COMMAND ----------
 
 CREATE SCHEMA custom
-LOCATION 'dbfs:/Shared/schemas/custom.db'
+
 
 -- COMMAND ----------
 
@@ -163,3 +171,9 @@ DROP TABLE external_custom;
 -- COMMAND ----------
 
 -- MAGIC %fs ls 'dbfs:/mnt/demo/external_custom'
+
+-- COMMAND ----------
+
+drop schema workspace.new_default;
+
+drop schema workspace.custom;

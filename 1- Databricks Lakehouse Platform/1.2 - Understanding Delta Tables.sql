@@ -9,7 +9,42 @@
 
 -- COMMAND ----------
 
-USE CATALOG hive_metastore
+-- MAGIC %md
+-- MAGIC ## %md
+-- MAGIC ## USE CATALOG hive_metastore ==> não esta sendo mais usado no databricks free
+
+-- COMMAND ----------
+
+SHOW CATALOGS;
+
+-- COMMAND ----------
+
+SELECT current_catalog();
+
+-- COMMAND ----------
+
+SHOW SCHEMAS;
+
+-- COMMAND ----------
+
+USE CATALOG workspace;
+
+SHOW SCHEMAS;
+
+
+-- COMMAND ----------
+
+USE CATALOG workspace;
+USE SCHEMA default;
+
+CREATE TABLE IF NOT EXISTS alunos (
+    id INT,
+    nome STRING
+);
+
+-- COMMAND ----------
+
+SHOW TABLES;
 
 -- COMMAND ----------
 
@@ -64,12 +99,44 @@ DESCRIBE DETAIL employees
 
 -- COMMAND ----------
 
+DESCRIBE DETAIL workspace.default.employees;
+
+-- COMMAND ----------
+
+SELECT current_catalog();
+
+-- COMMAND ----------
+
+SELECT current_schema();
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY workspace.default.employees;
+
+-- COMMAND ----------
+
+SHOW TBLPROPERTIES workspace.default.employees;
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC ## Exploring Table Directory
 
 -- COMMAND ----------
 
 -- MAGIC %fs ls 'dbfs:/user/hive/warehouse/employees'
+-- MAGIC
+-- MAGIC workspace.default.employees
+-- MAGIC
+
+-- COMMAND ----------
+
+-- MAGIC %fs ls 'dbfs:'
+-- MAGIC
+
+-- COMMAND ----------
+
+select * from employees
 
 -- COMMAND ----------
 
@@ -84,11 +151,21 @@ WHERE name LIKE "A%"
 
 -- COMMAND ----------
 
+select * from employees
+
+-- COMMAND ----------
+
+select * from employees@v
+
+-- COMMAND ----------
+
 SELECT * FROM employees
 
 -- COMMAND ----------
 
--- MAGIC %fs ls 'dbfs:/user/hive/warehouse/employees'
+-- MAGIC %md
+-- MAGIC
+-- MAGIC #### ls 'dbfs:/user/hive/warehouse/employees' -- naos esta sendo mais usada
 
 -- COMMAND ----------
 
@@ -109,12 +186,50 @@ DESCRIBE HISTORY employees
 
 -- COMMAND ----------
 
--- MAGIC %fs ls 'dbfs:/user/hive/warehouse/employees/_delta_log'
+-- MAGIC %md
+-- MAGIC ls 'dbfs:/user/hive/warehouse/employees/_delta_log'
 
 -- COMMAND ----------
 
--- MAGIC %fs head 'dbfs:/user/hive/warehouse/employees/_delta_log/00000000000000000005.json'
+-- MAGIC %md
+-- MAGIC head 'dbfs:/user/hive/warehouse/employees/_delta_log/00000000000000000005.json'
 
 -- COMMAND ----------
+
+select * from employees@v04
+
+-- COMMAND ----------
+
+select * from employees@v05
+
+-- COMMAND ----------
+
+select sum(salary) from employees@v04
+union all
+select sum(salary) from employees@v05
+
+-- COMMAND ----------
+
+select * from employees@v01
+
+-- COMMAND ----------
+
+select * from employees@v00
+
+-- COMMAND ----------
+
+select * from employees@v02
+
+-- COMMAND ----------
+
+select * from employees@v03
+
+-- COMMAND ----------
+
+-- Os notebooks no Databricks são salvos automaticamente.
+
+-- COMMAND ----------
+
+select teste as teste
 
 

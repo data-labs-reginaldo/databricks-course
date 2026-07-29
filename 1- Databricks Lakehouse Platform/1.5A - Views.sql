@@ -4,7 +4,7 @@
 
 -- COMMAND ----------
 
-USE CATALOG hive_metastore;
+USE CATALOG workspace;
 
 CREATE TABLE IF NOT EXISTS smartphones
 (id INT, name STRING, brand STRING, year INT);
@@ -65,20 +65,31 @@ SHOW TABLES;
 
 -- COMMAND ----------
 
+create schema global_temp
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC
 -- MAGIC ## Creating Global Temporary Views
 
 -- COMMAND ----------
 
-CREATE GLOBAL TEMP VIEW global_temp_view_latest_phones
-AS SELECT * FROM smartphones
+CREATE TEMP VIEW global_temp_view_latest_phones
+AS SELECT * FROM workspace.default.smartphones
     WHERE year > 2020
     ORDER BY year DESC;
 
 -- COMMAND ----------
 
-SELECT * FROM global_temp.global_temp_view_latest_phones;
+SELECT * FROM workspace.default.smartphones
+    WHERE year > 2020
+    ORDER BY year DESC;
+
+
+-- COMMAND ----------
+
+SELECT * FROM global_temp_view_latest_phones;
 
 -- COMMAND ----------
 
@@ -90,4 +101,56 @@ SHOW TABLES IN global_temp;
 
 -- COMMAND ----------
 
+SHOW TABLES IN global_temp;
+
+-- COMMAND ----------
+
 SHOW TABLES
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY employees
+
+-- COMMAND ----------
+
+select * from _sqldf
+
+-- COMMAND ----------
+
+SELECT *
+FROM workspace.default.smartphones;
+
+
+-- COMMAND ----------
+
+SELECT *
+FROM _sqldf;
+
+-- COMMAND ----------
+
+SELECT
+    brand,
+    COUNT(*) quantidade
+FROM workspace.default.smartphones
+GROUP BY brand;
+
+-- COMMAND ----------
+
+SELECT *
+FROM _sqldf;
+
+-- COMMAND ----------
+
+DESCRIBE DETAIL alunos
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY temp_view_phones_brands
+
+-- COMMAND ----------
+
+DESCRIBE DETAIL view_apple_phones 
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY view_apple_phones 

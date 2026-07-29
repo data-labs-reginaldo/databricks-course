@@ -5,7 +5,7 @@
 
 -- COMMAND ----------
 
-USE CATALOG hive_metastore
+USE CATALOG workspace
 
 -- COMMAND ----------
 
@@ -23,6 +23,10 @@ SELECT * FROM employees@v4
 -- COMMAND ----------
 
 DELETE FROM employees
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY employees
 
 -- COMMAND ----------
 
@@ -65,7 +69,16 @@ DESCRIBE HISTORY employees
 
 -- COMMAND ----------
 
--- MAGIC %fs ls 'dbfs:/user/hive/warehouse/employees'
+-- MAGIC %md
+-- MAGIC ls 'dbfs:/user/hive/warehouse/employees'
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY employees
+
+-- COMMAND ----------
+
+DESCRIBE DETAIL employees
 
 -- COMMAND ----------
 
@@ -87,7 +100,12 @@ VACUUM employees RETAIN 0 HOURS
 
 -- COMMAND ----------
 
-SET spark.databricks.delta.retentionDurationCheck.enabled = false;
+-- MAGIC %md
+-- MAGIC SET spark.databricks.delta.retentionDurationCheck.enabled = false;
+
+-- COMMAND ----------
+
+DESCRIBE DETAIL employees
 
 -- COMMAND ----------
 
@@ -95,7 +113,12 @@ VACUUM employees RETAIN 0 HOURS
 
 -- COMMAND ----------
 
--- MAGIC %fs ls 'dbfs:/user/hive/warehouse/employees'
+-- MAGIC %md
+-- MAGIC ls 'dbfs:/user/hive/warehouse/employees'
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY employees
 
 -- COMMAND ----------
 
@@ -117,4 +140,10 @@ SELECT * FROM employees
 
 -- COMMAND ----------
 
--- MAGIC %fs ls 'dbfs:/user/hive/warehouse/employees'
+-- MAGIC %md
+-- MAGIC ls 'dbfs:/user/hive/warehouse/employees'
+
+-- COMMAND ----------
+
+describe history employees
+select * from employees@v1

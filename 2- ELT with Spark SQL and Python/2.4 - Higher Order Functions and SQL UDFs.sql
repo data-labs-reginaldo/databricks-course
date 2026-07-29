@@ -25,7 +25,7 @@ SELECT
   order_id,
   books,
   FILTER (books, i -> i.quantity >= 2) AS multiple_copies
-FROM orders
+FROM orders_lab
 
 -- COMMAND ----------
 
@@ -34,8 +34,12 @@ FROM (
   SELECT
     order_id,
     FILTER (books, i -> i.quantity >= 2) AS multiple_copies
-  FROM orders)
+  FROM orders_lab)
 WHERE size(multiple_copies) > 0;
+
+-- COMMAND ----------
+
+describe customers_lab
 
 -- COMMAND ----------
 
@@ -52,7 +56,7 @@ SELECT
     books,
     b -> CAST(b.subtotal * 0.8 AS INT)
   ) AS subtotal_after_discount
-FROM orders;
+FROM orders_lab;
 
 -- COMMAND ----------
 
@@ -69,7 +73,7 @@ RETURN concat("https://www.", split(email, "@")[1])
 -- COMMAND ----------
 
 SELECT email, get_url(email) domain
-FROM customers
+FROM customers_lab
 
 -- COMMAND ----------
 
@@ -99,3 +103,94 @@ FROM customers
 
 DROP FUNCTION get_url;
 DROP FUNCTION site_type;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC
+-- MAGIC ##  USER DEFINED FUNCTION (UDF)
+-- MAGIC
+-- MAGIC --
+-- MAGIC -- Nome.......: get_url
+-- MAGIC -- Objetivo...: Retornar a URL do domínio de um e-mail.
+-- MAGIC --
+-- MAGIC -- Exemplo:
+-- MAGIC --
+-- MAGIC -- Entrada:
+-- MAGIC --     thomas@gmail.com
+-- MAGIC --
+-- MAGIC -- Saída:
+-- MAGIC --     https://www.gmail.com
+-- MAGIC --
+-- MAGIC -- Entrada:
+-- MAGIC --     maria@yahoo.com
+-- MAGIC --
+-- MAGIC -- Saída:
+-- MAGIC --     https://www.yahoo.com
+-- MAGIC --
+-- MAGIC -- Funções utilizadas:
+-- MAGIC --
+-- MAGIC -- split()
+-- MAGIC -- concat()
+-- MAGIC
+
+-- COMMAND ----------
+
+CREATE OR REPLACE FUNCTION get_url(email STRING)
+RETURNS STRING
+
+RETURN concat(
+    'https://www.',
+    split(email,'@')[1]
+);
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC
+-- MAGIC ## EXEMPLO 1
+-- MAGIC
+-- MAGIC
+-- MAGIC SELECT get_url('thomas@gmail.com');
+-- MAGIC
+-- MAGIC -- Resultado esperado:
+-- MAGIC --
+-- MAGIC -- https://www.gmail.com
+-- MAGIC
+
+-- COMMAND ----------
+
+SELECT get_url('thomas@gmail.com');
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC
+-- MAGIC ###- EXEMPLO 2
+-- MAGIC
+-- MAGIC
+-- MAGIC SELECT get_url('reginaldo@empresa.com');
+-- MAGIC
+-- MAGIC -- Resultado esperado:
+-- MAGIC --
+-- MAGIC -- https://www.empresa.com
+
+-- COMMAND ----------
+
+SELECT get_url('reginaldo@empresa.com');
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ## EXEMPLO 3
+-- MAGIC ## UTILIZANDO A TABELA CUSTOMERS
+-- MAGIC
+-- MAGIC
+
+-- COMMAND ----------
+
+SELECT
+customer_id,
+email,
+get_url(email) AS website
+FROM customers_lab;
