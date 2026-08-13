@@ -1,38 +1,44 @@
 -- Databricks notebook source
 
--- COMMAND ----------
-%md
-# BookStore Lab
-## 05 - Load Orders Updates
 
 -- COMMAND ----------
-%md
-# 📖 Introdução
 
-Neste notebook carregaremos a tabela **orders_updates**, utilizada para simular cargas incrementais e alterações em pedidos já existentes.
-
-Esses dados serão utilizados posteriormente no notebook de **MERGE INTO**.
+-- MAGIC %md
+-- MAGIC # BookStore Lab
+-- MAGIC ## 05 - Load Orders Updates
 
 -- COMMAND ----------
-%md
-# 🎯 Objetivo
 
-Ao concluir este notebook você será capaz de:
-
-- Carregar dados incrementais
-- Simular atualizações de pedidos
-- Preparar dados para operações de MERGE
-- Validar a carga realizada
+-- MAGIC %md
+-- MAGIC # 📖 Introdução
+-- MAGIC
+-- MAGIC Neste notebook carregaremos a tabela **orders_updates**, utilizada para simular cargas incrementais e alterações em pedidos já existentes.
+-- MAGIC
+-- MAGIC Esses dados serão utilizados posteriormente no notebook de **MERGE INTO**.
 
 -- COMMAND ----------
-%md
-# 🧠 Conceito
 
-Em projetos reais é comum receber apenas novos registros ou alterações.
-
-A tabela **orders_updates** representa esse cenário, servindo como origem para sincronizar a tabela **orders**.
+-- MAGIC %md
+-- MAGIC # 🎯 Objetivo
+-- MAGIC
+-- MAGIC Ao concluir este notebook você será capaz de:
+-- MAGIC
+-- MAGIC - Carregar dados incrementais
+-- MAGIC - Simular atualizações de pedidos
+-- MAGIC - Preparar dados para operações de MERGE
+-- MAGIC - Validar a carga realizada
 
 -- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC # 🧠 Conceito
+-- MAGIC
+-- MAGIC Em projetos reais é comum receber apenas novos registros ou alterações.
+-- MAGIC
+-- MAGIC A tabela **orders_updates** representa esse cenário, servindo como origem para sincronizar a tabela **orders**.
+
+-- COMMAND ----------
+
 USE CATALOG workspace;
 
 CREATE SCHEMA IF NOT EXISTS bookstore_lab;
@@ -40,32 +46,178 @@ CREATE SCHEMA IF NOT EXISTS bookstore_lab;
 USE SCHEMA bookstore_lab;
 
 -- COMMAND ----------
-%md
-# 📝 Sintaxe
 
-```sql
-INSERT INTO orders_updates
-VALUES (...);
-```
-
--- COMMAND ----------
-%md
-# 💡 Exemplo 1 - Load Orders Updates
-
-Carga da tabela incremental.
+-- MAGIC %md
+-- MAGIC # 📝 Sintaxe
+-- MAGIC
+-- MAGIC ```sql
+-- MAGIC INSERT INTO orders_updates
+-- MAGIC VALUES (...);
+-- MAGIC ```
 
 -- COMMAND ----------
 
+describe orders_updates
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC # 💡 Exemplo 1 - Load Orders Updates
+-- MAGIC
+-- MAGIC Carga da tabela incremental.
+
+-- COMMAND ----------
+
+
 INSERT INTO orders_updates
+(
+    order_id,
+    customer_id,
+    order_timestamp,
+    order_date,
+    total_items,
+    total_amount,
+    status,
+    books
+)
 VALUES
-
--- (MANTER EXATAMENTE TODOS OS REGISTROS DO ARQUIVO ORIGINAL)
-
-;
+(
+    'O0001',
+    'C001',
+    TIMESTAMP '2024-01-10 09:10:00',
+    DATE '2024-01-10',
+    2,
+    129.80,
+    'SHIPPED',
+    array(
+        named_struct(
+            'book_id', 'B001',
+            'quantity', 1,
+            'unit_price', 59.90,
+            'discount', 0.00,
+            'subtotal', 59.90
+        ),
+        named_struct(
+            'book_id', 'B010',
+            'quantity', 1,
+            'unit_price', 69.90,
+            'discount', 0.00,
+            'subtotal', 69.90
+        )
+    )
+),
+(
+    'O0003',
+    'C003',
+    TIMESTAMP '2024-01-12 11:00:00',
+    DATE '2024-01-12',
+    3,
+    204.70,
+    'DELIVERED',
+    array(
+        named_struct(
+            'book_id', 'B002',
+            'quantity', 1,
+            'unit_price', 69.90,
+            'discount', 0.00,
+            'subtotal', 69.90
+        ),
+        named_struct(
+            'book_id', 'B014',
+            'quantity', 1,
+            'unit_price', 65.90,
+            'discount', 0.00,
+            'subtotal', 65.90
+        ),
+        named_struct(
+            'book_id', 'B035',
+            'quantity', 1,
+            'unit_price', 68.90,
+            'discount', 0.00,
+            'subtotal', 68.90
+        )
+    )
+),
+(
+    'O0004',
+    'C004',
+    TIMESTAMP '2024-01-13 08:40:00',
+    DATE '2024-01-13',
+    2,
+    171.80,
+    'DELIVERED',
+    array(
+        named_struct(
+            'book_id', 'B018',
+            'quantity', 1,
+            'unit_price', 119.90,
+            'discount', 10.00,
+            'subtotal', 109.90
+        ),
+        named_struct(
+            'book_id', 'B016',
+            'quantity', 1,
+            'unit_price', 61.90,
+            'discount', 0.00,
+            'subtotal', 61.90
+        )
+    )
+),
+(
+    'O0006',
+    'C006',
+    TIMESTAMP '2024-01-16 13:15:00',
+    DATE '2024-01-16',
+    2,
+    154.80,
+    'PROCESSING',
+    array(
+        named_struct(
+            'book_id', 'B029',
+            'quantity', 1,
+            'unit_price', 86.90,
+            'discount', 10.00,
+            'subtotal', 76.90
+        ),
+        named_struct(
+            'book_id', 'B030',
+            'quantity', 1,
+            'unit_price', 77.90,
+            'discount', 0.00,
+            'subtotal', 77.90
+        )
+    )
+),
+(
+    'O0009',
+    'C009',
+    TIMESTAMP '2024-01-19 12:30:00',
+    DATE '2024-01-19',
+    2,
+    147.80,
+    'DELIVERED',
+    array(
+        named_struct(
+            'book_id', 'B026',
+            'quantity', 1,
+            'unit_price', 72.90,
+            'discount', 0.00,
+            'subtotal', 72.90
+        ),
+        named_struct(
+            'book_id', 'B027',
+            'quantity', 1,
+            'unit_price', 74.90,
+            'discount', 0.00,
+            'subtotal', 74.90
+        )
+    )
+);
 
 -- COMMAND ----------
-%md
-# ▶️ Execução
+
+-- MAGIC %md
+-- MAGIC # ▶️ Execução
 
 -- COMMAND ----------
 
@@ -73,8 +225,9 @@ SELECT COUNT(*) AS total_updates
 FROM orders_updates;
 
 -- COMMAND ----------
-%md
-# 💡 Exemplo 2 - Pedidos Atualizados
+
+-- MAGIC %md
+-- MAGIC # 💡 Exemplo 2 - Pedidos Atualizados
 
 -- COMMAND ----------
 
@@ -88,8 +241,9 @@ FROM orders_updates
 ORDER BY order_id;
 
 -- COMMAND ----------
-%md
-# 💡 Exemplo 3 - Itens dos Pedidos
+
+-- MAGIC %md
+-- MAGIC # 💡 Exemplo 3 - Itens dos Pedidos
 
 -- COMMAND ----------
 
@@ -99,8 +253,9 @@ SELECT
 FROM orders_updates;
 
 -- COMMAND ----------
-%md
-# 💡 Exemplo 4 - Total Calculado
+
+-- MAGIC %md
+-- MAGIC # 💡 Exemplo 4 - Total Calculado
 
 -- COMMAND ----------
 
@@ -109,23 +264,25 @@ SELECT
     aggregate(
         books,
         CAST(0 AS DECIMAL(10,2)),
-        (acc, x) -> acc + x.subtotal
+        (acc, x) -> CAST(acc + x.subtotal AS DECIMAL(10,2))
     ) AS calculated_total
 FROM orders_updates;
 
 -- COMMAND ----------
-%md
-# 🧪 Exercícios
 
-1. Execute a carga da tabela orders_updates.
-2. Conte os registros carregados.
-3. Liste os pedidos atualizados.
-4. Explore os itens utilizando explode().
-5. Calcule o valor total com aggregate().
+-- MAGIC %md
+-- MAGIC # 🧪 Exercícios
+-- MAGIC
+-- MAGIC 1. Execute a carga da tabela orders_updates.
+-- MAGIC 2. Conte os registros carregados.
+-- MAGIC 3. Liste os pedidos atualizados.
+-- MAGIC 4. Explore os itens utilizando explode().
+-- MAGIC 5. Calcule o valor total com aggregate().
 
 -- COMMAND ----------
-%md
-# ✅ Solução
+
+-- MAGIC %md
+-- MAGIC # ✅ Solução
 
 -- COMMAND ----------
 
@@ -143,29 +300,31 @@ SELECT
     aggregate(
         books,
         CAST(0 AS DECIMAL(10,2)),
-        (acc, x) -> acc + x.subtotal
+        (acc, x) -> CAST(acc + x.subtotal AS DECIMAL(10,2))
     ) AS total_amount
 FROM orders_updates;
 
 -- COMMAND ----------
-%md
-# 📌 Resumo
 
-Neste notebook aprendemos a:
-
-- Carregar dados incrementais.
-- Preparar informações para operações MERGE.
-- Validar pedidos atualizados.
-- Trabalhar com ARRAY<STRUCT> em consultas SQL.
+-- MAGIC %md
+-- MAGIC # 📌 Resumo
+-- MAGIC
+-- MAGIC Neste notebook aprendemos a:
+-- MAGIC
+-- MAGIC - Carregar dados incrementais.
+-- MAGIC - Preparar informações para operações MERGE.
+-- MAGIC - Validar pedidos atualizados.
+-- MAGIC - Trabalhar com ARRAY<STRUCT> em consultas SQL.
 
 -- COMMAND ----------
-%md
-# 🚀 Desafio
 
-Adicione um novo registro na tabela **orders_updates** representando uma alteração de um pedido existente.
-
-Depois valide:
-
-- Quantidade total de registros.
-- Valor total calculado.
-- Dados que serão utilizados no notebook **09 - MERGE INTO**.
+-- MAGIC %md
+-- MAGIC # 🚀 Desafio
+-- MAGIC
+-- MAGIC Adicione um novo registro na tabela **orders_updates** representando uma alteração de um pedido existente.
+-- MAGIC
+-- MAGIC Depois valide:
+-- MAGIC
+-- MAGIC - Quantidade total de registros.
+-- MAGIC - Valor total calculado.
+-- MAGIC - Dados que serão utilizados no notebook **09 - MERGE INTO**.
